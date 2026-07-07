@@ -23,8 +23,7 @@ emails you the new ones. It runs entirely on GitHub Actions for free. Your
 computer is only needed if you want to test things locally.
 
 **vs. SWEList:** SWEList emails every new posting, batched once a day. Dibs adds
-per-company filtering, so you only hear about roles you'd actually apply to, and
-it checks every 15 minutes instead of daily. Think of it as the filtered,
+per-company filtering, so you get notified about new postings you care about the most, and it checks every 15 minutes instead of daily. Think of it as the filtered,
 near-real-time version of the same idea.
 
 ## How it works
