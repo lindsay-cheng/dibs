@@ -79,6 +79,21 @@ required.
 
 That's it. Everything runs on GitHub's servers on a timer. You can close the tab.
 
+**Optional: check your email secrets before trusting the schedule.** Locally,
+`pip install -r requirements.txt`, then set the same three values and run the
+tests:
+
+```bash
+export GMAIL_USER="you@gmail.com"
+export GMAIL_APP_PASSWORD="xxxx xxxx xxxx xxxx"
+export RECIPIENT="you@gmail.com"
+python test_dibs.py
+```
+
+That runs the logic checks and, because the secrets are set, sends you one real
+test email. A bad app password fails here loudly instead of silently on a run
+at 3am. Without those env vars the test still runs and just skips the email.
+
 ## Adjusting the watchlist later
 
 Edit `config.yaml` and commit. Changes apply on the next scheduled run. A company
