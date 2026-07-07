@@ -42,7 +42,7 @@ genuinely new roles.
 The whole thing takes about five minutes in the browser. No local install
 required.
 
-1. **Make your own copy.** Click
+1. **Make your own copy.** Top-right, next to Star repo button, click
    **"Use this template" → Create a new repository**. Use this template, not
    Fork. Your copy holds your watchlist, your email secrets, and your state,
    all separate from the original. Make it private if you want.
