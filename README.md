@@ -102,8 +102,3 @@ runners have no other memory between runs.
 failure email.
 - If nothing matches for about 60 days, GitHub pauses the schedule on quiet
 repos. It emails you first, and one click re-enables it.
-
-## Publishing this as a template (owner only)
-
-After you push this repo, go to **Settings → General** and check
-**"Template repository"** so the "Use this template" button shows up.
