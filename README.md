@@ -52,14 +52,16 @@ required.
 
    ```yaml
    companies:
-     - Stripe                    # every Stripe role
-     - name: Google
-       roles: [software, swe]    # only titles containing these words
+     - Citadel                   # every Citadel role
+     - name: Jane Street
+       roles: [software]         # only titles containing these words
    ```
 
    Names are matched loosely, so `Jane Street` finds `Jane Street Capital`.
-   If a company you expect never shows up, run `python companies.py` locally
-   to print the exact names in the data and paste one in.
+   Run `python companies.py` locally to write every company name in the
+   data to `companies.txt`, then copy the exact spelling from there. Two things worth knowing: this
+   source only tracks the companies in that list, and a company can be listed but have nothing open
+   right now. Watching it still works: Dibs emails you when it next posts.
 4. **Add your email secrets.** Go to
    **Settings → Secrets and variables → Actions** and add three repository
    secrets:
@@ -84,7 +86,7 @@ with no `roles:` list matches all of its postings; add `roles:` to narrow it to
 titles containing those words. Matching ignores case and punctuation and drops
 Inc/LLC/Corp, so exact capitalization doesn't matter. One caveat: it's a
 substring match, so very short names can catch extras (`meta` also matches
-"Metabase"). Paste the exact name from `companies.py` if you see noise.
+"Metabase"). Paste the exact name from `companies.txt` if you see noise.
 
 ## Changing how often it checks
 
