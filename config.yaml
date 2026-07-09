@@ -5,6 +5,10 @@
 # Matching is case-insensitive and fuzzy on punctuation/Inc/LLC/Corp, so
 # "Jane Street" matches "Jane Street Capital". Don't know a company's exact
 # name? Run `python companies.py` to print the real list.
+#
+# Want every company, no filter? Uncomment the next line (auto-includes
+# companies Simplify adds later):
+# companies: all
 companies:
   - Citadel
   - name: Jane Street
