@@ -114,13 +114,55 @@ The schedule lives in `.github/workflows/poll.yml`, in the `cron:` line, not
 `config.yaml`. GitHub's shortest interval is 5 minutes, and the file is already
 set to that.
 
-One catch: GitHub's built-in `schedule:` is best-effort. Under load it drifts
-and drops runs, so in practice you may see gaps longer than 5 minutes. For
-reliable 5-minute polling, point a free external scheduler
-([cron-job.org](https://cron-job.org)) at the workflow's `workflow_dispatch`
-endpoint with a personal access token, every 5 minutes. That path skips the
-throttle queue and fires on time; the built-in cron stays as a fallback if the
-external trigger ever lapses.
+One catch: GitHub's built-in `schedule:` is best-effort — under load it drifts
+and drops runs, so in practice you may see gaps longer than 5 minutes. See the
+next section if you want the full 5-minute cadence.
+
+## Reliable 5-minute polling (optional)
+
+The fix for the drifting schedule is a free external scheduler,
+[cron-job.org](https://cron-job.org), that pings the workflow's
+`workflow_dispatch` endpoint every 5 minutes. That path skips the throttle
+queue and fires on time; the built-in cron stays in `poll.yml` as a fallback
+if the external trigger ever lapses. Setup takes about five minutes, all in
+the browser:
+
+1. **Create a token that can trigger the workflow.** On GitHub, click your
+   profile photo → **Settings → Developer settings → Personal access tokens →
+   Fine-grained tokens → Generate new token**. Name it anything, pick an
+   expiration date you'll remember to renew, and under **Repository access**
+   choose **Only select repositories** → your copy. Under **Permissions →
+   Repository permissions** set **Actions** to **Read and write** — nothing
+   else is needed. Generate and copy the token; it's shown only once. (A
+   classic token with the `repo` scope also works, but it can access every
+   repo you own.)
+2. **Create the cron job.** Sign up at
+   [console.cron-job.org](https://console.cron-job.org/signup) (free, no
+   card), then click **Create cronjob**. Title is anything, e.g.
+   `dibs poll`. Fill in:
+
+   | Field | Value |
+   | --- | --- |
+   | URL | `https://api.github.com/repos/OWNER/REPO/actions/workflows/poll.yml/dispatches` |
+   | Schedule | every 5 minutes (preset, or cron `*/5 * * * *`) |
+   | Request method (**Advanced** tab) | `POST` |
+   | Headers (**Advanced** tab) | `Accept: application/vnd.github+json` and `Authorization: Bearer YOUR_TOKEN` |
+   | Request body (**Advanced** tab) | `{"ref":"main"}` — change it if your default branch isn't `main` |
+
+   Replace `OWNER` and `REPO` with your GitHub username and repo name,
+   exactly as they appear in the repo's URL, and `YOUR_TOKEN` with the token
+   from step 1. While you're in the Advanced tab, turn on the failure email
+   notification: if the token ever expires the job starts failing, and after
+   ~25 failures in a row cron-job.org auto-disables it — the email is your
+   heads-up to renew the token.
+3. **Test it.** In the cron-job.org job list, click the test-run (play) icon
+   on the job. It should report success. Within seconds a new **dibs poll**
+   run appears in your repo's **Actions** tab, marked as triggered by
+   `workflow_dispatch`.
+
+If the test fails, the status code tells you why: `401` = token wrong or
+expired, `404` = wrong `OWNER`/`REPO` in the URL or the token isn't scoped to
+that repo, `422` = the `ref` branch doesn't exist.
 
 ## Good to know
 
